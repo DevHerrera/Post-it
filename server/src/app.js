@@ -23,14 +23,14 @@ app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(cors())
 
-// Routes set up
-// const authentication = require('./routes/authentication')
-// const post = require('./routes/post')
-// const index = require('./routes/index')
+//Routes set up
+var authentication = require('./routes/user/authenticationRoute')
+var post = require('./routes/post/postRoute')
+var index = require('./routes/index')
 
-// app.use('/', index)
-// app.use('/user', authentication)
-// app.use('/post', post)
+app.use('/', index)
+app.use('/user', authentication)
+app.use('/post', post)
 
 // Running server
 app.listen(process.env.PORT || 3000)
