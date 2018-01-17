@@ -4,8 +4,9 @@
     <div class="col-12">
       <form @submit.prevent="register">
 
-        <div class="form-group row">
-          <h1>Registration</h1>
+        <div class="form-group">
+          <h1>Sign up!</h1>
+          <p class="text-muted">It's free and always will be!</p>
         </div>
 
         <div class="form-group row">
@@ -55,8 +56,11 @@
             </ul>
           </p>
         </div>
+        <div v-if="success" class="alert alert-success" role="alert">
+          Registration successful
+        </div>
         <div class="form-group">
-          <button type="submit" class="float-right btn btn-success btn-lg">Register</button>
+          <button type="submit" class="float-right btn btn-color btn-lg">Register</button>
         </div>
       </form>
     </div>
@@ -97,7 +101,7 @@ export default {
       password: '',
       passwordMatch: '',
       errorsAPI: null,
-      success: null
+      success: false
     }
   },
   methods: {
@@ -112,6 +116,11 @@ export default {
           }).then(response => {
             this.success = true
             this.errorsAPI = null
+            this.cleanInput()
+            this.$validator.pause()
+            setTimeout(() => {
+              this.$validator.resume()
+            }, 400)
           })
             .catch(e => {
               this.success = false
@@ -119,6 +128,12 @@ export default {
             })
         }
       })
+    },
+    cleanInput () {
+      this.email = ''
+      this.username = ''
+      this.passwordMatch = ''
+      this.password = ''
     }
   }
 }
@@ -128,15 +143,15 @@ export default {
 .error_container{
  margin: 0%;
 }
-button{
-  cursor: pointer;
-  margin-bottom: 0%;
+.btn-color{
+  background-color: #e27d60;
+  color: #edf5e1;
 }
 strong{
   font-size: 90%;
 }
 .invalid{
-  color: red;
+  color: #E64A19;
   font-size: 70%;
 }
 </style>

@@ -17,7 +17,7 @@
           </ul>
         </nav>
         <router-link class="nav-link" to="/">
-          <h3 class="text-muted float-left">Post it!</h3>
+          <h3 class="text-muted float-left">Post | It</h3>
         </router-link>
       </div>
       <hr>
