@@ -6,5 +6,8 @@ export default {
   },
   home () {
     return Api().get('/')
+  },
+  login (credentials) {
+    return Api().post('user/login', credentials)
   }
 }

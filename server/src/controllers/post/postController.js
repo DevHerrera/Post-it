@@ -11,9 +11,9 @@ exports.home = function(req, res) {
     })
   }
   else {
-    return res.status(403).send({ 
-        success: false, 
-        message: 'Forbidden' 
+    return res.status(403).send({
+        success: false,
+        message: 'Forbidden'
     });
   }
 }

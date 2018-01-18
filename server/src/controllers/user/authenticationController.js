@@ -37,7 +37,7 @@ exports.register = [
     })
 
     if(!errors.isEmpty()) {
-      // There are errors, let's send them.      
+      // There are errors, let's send them.
       res.status(400).json({
         error: errors.array()
       })
@@ -59,14 +59,14 @@ exports.register = [
             ]
             res.status(400).json({
               error: error_json
-            })            
+            })
           }
         }
-        else {          
+        else {
           res.status(201).json({
             sucess: true,
             message: 'The user have been created!'
-          })          
+          })
         }
       })
     }
@@ -84,29 +84,33 @@ exports.authenticate = [
   (req, res, next) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      // There are erros with form data      
+      // There are erros with form data
       res.status(400).json({
         error: errors.array()
       })
       return
     }
     else {
-      // Lets find the user
+      var errors_json = [
+        { msg: '' }
+      ]
       User.findOne({username: req.body.username}, function (err, user) {
         if (err || user === null) {
           // User with form's data username not found
+          errors_json[0].msg = 'User does not exist'
           res.status(404).json({
-            error: 'User does not exist'
-          })          
+            error: errors_json
+          })
         }
         else {
-          // User found, lets authenticate passwords          
+          // User found, lets authenticate passwords
           user.comparePassword(req.body.password, function (err, isMatch) {
             if (err || !isMatch) {
               // Password did not match
+              errors_json[0].msg = 'Password incorrect'
               res.status(401).json({
-                error: 'Password incorrect'
-              })           
+                error: errors_json
+              })
             }
             if (isMatch) {
               // Passwords matched, let's return a token with the user's data

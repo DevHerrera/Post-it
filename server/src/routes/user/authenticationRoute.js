@@ -4,7 +4,7 @@ const router = express.Router()
 // Require controllers
 const authentication_controller = require('../../controllers/user/authenticationController')
 
-// REGISTRATION 
+// REGISTRATION
 router.post('/register', authentication_controller.register)
 router.post('/login', authentication_controller.authenticate)
 
