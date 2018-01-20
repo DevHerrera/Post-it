@@ -43,8 +43,7 @@ export default {
       this.newUser = !this.newUser
       if (this.newUser) {
         this.buttonText = 'Have an account?'
-      }
-      else {
+      } else {
         this.buttonText = 'Create an account'
       }
     }

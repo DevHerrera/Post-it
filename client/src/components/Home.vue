@@ -18,12 +18,13 @@ export default {
     }
   },
   mounted () {
-    AuthenticationService.home()
+    AuthenticationService.checkAuth()
+    AuthenticationService.home(AuthenticationService.config)
       .then(response => {
         console.log(response.data)
       })
       .catch(e => {
-        console.log('ERROR')
+        console.log(e.response.data)
       })
   }
 }

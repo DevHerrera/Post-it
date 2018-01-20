@@ -82,7 +82,9 @@ export default {
           }).then(response => {
             this.success = true
             this.errorsAPI = null
+            AuthenticationService.user.authenticated = true
             this.cleanInput()
+            localStorage.setItem('authToken', response.data.token)
             this.$validator.pause()
             setTimeout(() => {
               this.$validator.resume()
