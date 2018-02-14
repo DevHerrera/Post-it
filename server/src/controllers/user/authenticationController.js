@@ -36,19 +36,21 @@ exports.register = [
       password: req.body.password
     })
 
+    // There are errors, let's send them.
     if(!errors.isEmpty()) {
-      // There are errors, let's send them.
       res.status(400).json({
         error: errors.array()
       })
       return
     }
+    // Data is valid
     else {
-      // Data is valid
+      // Let's try to store the user.
       user.save(function(err) {
+        // There are errors
         if (err) {
+          // Email or username could violate the unique index, let's see what field it was
           if (err.code == 11000) {
-            // Email or username could violate the unique index, let's see what field it was
             var field = err.message.split(".$")[1]
             field = field.split(" dup key")[0]
             field = field.substring(0, field.lastIndexOf("_"))
@@ -62,6 +64,7 @@ exports.register = [
             })
           }
         }
+        // No errors, the user is stored
         else {
           res.status(201).json({
             sucess: true,
@@ -73,6 +76,8 @@ exports.register = [
   }
 ]
 
+// Authenticates the user, requires username and password.
+
 exports.authenticate = [
   // Validate fields
   body('username', 'Invalid data.').isLength({min: 1}).trim(),
@@ -81,19 +86,23 @@ exports.authenticate = [
   sanitizeBody('username').escape(),
   sanitizeBody('password').escape(),
 
+  // After checking the user's input data
   (req, res, next) => {
+    // Check for errors
     const errors = validationResult(req)
+    // There are erros with form data
     if (!errors.isEmpty()) {
-      // There are erros with form data
       res.status(400).json({
         error: errors.array()
       })
       return
     }
+    // No errors with the input data
     else {
       var errors_json = [
         { msg: '' }
       ]
+      // Let's search for a  user with the input's username
       User.findOne({username: req.body.username}, function (err, user) {
         if (err || user === null) {
           // User with form's data username not found
@@ -102,18 +111,18 @@ exports.authenticate = [
             error: errors_json
           })
         }
+        // User found, lets authenticate passwords
         else {
-          // User found, lets authenticate passwords
           user.comparePassword(req.body.password, function (err, isMatch) {
+            // Password did not match
             if (err || !isMatch) {
-              // Password did not match
               errors_json[0].msg = 'Password incorrect'
               res.status(401).json({
                 error: errors_json
               })
             }
+            // Passwords matched, let's return a token with the user's data
             if (isMatch) {
-              // Passwords matched, let's return a token with the user's data
               const payload = {
                 user_id: user._id,
                 username: user.username
