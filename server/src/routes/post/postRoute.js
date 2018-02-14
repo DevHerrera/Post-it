@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const protected = require('../protected')
+const protected = require('../../middleware/protected')
 
 // Post controller
 const post_controller = require('../../controllers/post/postController')
